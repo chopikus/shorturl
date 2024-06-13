@@ -22,5 +22,5 @@ CREATE TABLE urls
 );
 
 
--- Inserting example data into urls table;
+-- Inserting example data into urls table
 -- INSERT INTO urls (url_original, url_code) VALUES ('https://youtube.com', 'ABC11')
