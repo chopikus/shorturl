@@ -6,7 +6,7 @@ import (
     "fmt"
     "log"
     "database/sql"
-    "github.com/chopikus/url-shortener/templates"
+    "github.com/chopikus/shorturl/templates"
     "encoding/json"
 )
 

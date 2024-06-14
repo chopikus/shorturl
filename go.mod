@@ -1,4 +1,4 @@
-module github.com/chopikus/url-shortener
+module github.com/chopikus/shorturl
 
 go 1.22.3
 
