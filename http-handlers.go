@@ -6,8 +6,7 @@ import (
     "fmt"
     "log"
     "database/sql"
-    "context"
-    "github.com/chopikus/url-shortener/html"
+    "github.com/chopikus/url-shortener/templates"
 )
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
@@ -28,11 +27,9 @@ func codeHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    component := html.Redirect(url)
-    component.Render(context.Background(), w)
+    templates.Redirect.Execute(w, url)
 }
 
 func mainPageHandler(w http.ResponseWriter, r *http.Request) {
-    component := html.MainPage()
-	component.Render(context.Background(), w)
+    templates.Index.Execute(w, "")
 }
