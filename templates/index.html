@@ -7,11 +7,28 @@
 </div>
 <script type="text/javascript">
   (() => {
+    const fetchNewCode = (url) => {
+        const requestBody = {
+            urlOriginal: url
+        };
+
+        fetch("http://localhost:8000/api/new", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody)
+        })
+        .then((response) => response.json())
+        .then((responseJSON) => console.log(responseJSON["urlCode"]))
+        .catch((error) => console.log(error));
+    };
+
     let urlInput = document.getElementById("url-input");
     let button = document.getElementById("shorten-button");
     button.addEventListener('click', function() {
       let url = urlInput.value;
-      alert(url);
+      fetchNewCode(url);
     })
   })()
 </script>
