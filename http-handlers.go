@@ -7,7 +7,13 @@ import (
     "log"
     "database/sql"
     "github.com/chopikus/url-shortener/templates"
+    "encoding/json"
 )
+
+func methodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {
+    w.WriteHeader(http.StatusMethodNotAllowed)
+    fmt.Fprintf(w, "Method not allowed!")
+}
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusNotFound)
@@ -31,5 +37,39 @@ func codeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func mainPageHandler(w http.ResponseWriter, r *http.Request) {
-    templates.Index.Execute(w, "")
+    templates.Index.Execute(w, nil)
+}
+
+func generateCodeHandler(w http.ResponseWriter, r *http.Request) {
+    // https://www.alexedwards.net/blog/how-to-properly-parse-a-json-request-body
+    var data map[string]interface{}
+    err := json.NewDecoder(r.Body).Decode(&data)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    
+    originalUrl, ok := data["urlOriginal"].(string)
+    if !ok {
+        http.Error(w, "please put urlOriginal in the body", http.StatusBadRequest)
+        return
+    }
+
+    code, err := createCode(originalUrl)
+    if err != nil {
+        http.Error(w, "Internal error", http.StatusInternalServerError)
+        return
+    }
+    
+    output := make(map[string]interface{})
+    output["urlOriginal"] = originalUrl
+    output["urlCode"] = code
+
+    w.Header().Add("Content-Type", "application/json")
+    j, err := json.Marshal(output)
+    if err != nil {
+        http.Error(w, "Internal error", http.StatusInternalServerError)
+        return
+    }
+    w.Write(j)
 }

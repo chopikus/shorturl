@@ -25,11 +25,14 @@ func init() {
 
 func main() {
     r := mux.NewRouter()
+    
     r.HandleFunc("/", mainPageHandler)
     r.HandleFunc("/{code:[1-9A-Z]{6}}", codeHandler)
-    r.HandleFunc("/request-code", mainPageHandler).
+
+    r.HandleFunc("/api/new", generateCodeHandler).
       Methods("POST")
+    
     r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
-    r.MethodNotAllowedHandler = http.HandlerFunc(notFoundHandler)
+    r.MethodNotAllowedHandler = http.HandlerFunc(methodNotAllowedHandler)
     log.Fatal(http.ListenAndServe("localhost:8000", r))
 }
