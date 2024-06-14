@@ -1,4 +1,4 @@
-# url-shortener
+# shorturl
 
 ## making create API request
 ```
