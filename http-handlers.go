@@ -36,10 +36,6 @@ func codeHandler(w http.ResponseWriter, r *http.Request) {
     templates.Redirect.Execute(w, url)
 }
 
-func mainPageHandler(w http.ResponseWriter, r *http.Request) {
-    templates.Index.Execute(w, nil)
-}
-
 func generateCodeHandler(w http.ResponseWriter, r *http.Request) {
     // https://www.alexedwards.net/blog/how-to-properly-parse-a-json-request-body
     var data map[string]interface{}
@@ -73,3 +69,17 @@ func generateCodeHandler(w http.ResponseWriter, r *http.Request) {
     }
     w.Write(j)
 }
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "static/index.html");
+}
+
+func cssHandler(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "static/index.css");
+}
+
+func jsHandler(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "static/index.js");
+}
+
+

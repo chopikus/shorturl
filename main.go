@@ -26,7 +26,10 @@ func init() {
 func main() {
     r := mux.NewRouter()
     
-    r.HandleFunc("/", mainPageHandler)
+    r.HandleFunc("/", indexHandler)
+    r.HandleFunc("/index.css", cssHandler)
+    r.HandleFunc("/index.js", jsHandler)
+
     r.HandleFunc("/{code:[1-9A-Z]{6}}", codeHandler)
 
     r.HandleFunc("/api/new", generateCodeHandler).
