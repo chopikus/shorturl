@@ -11,7 +11,11 @@ const createLink = (url, text) => {
     return link
 };
 
+let tableUrls = new Set();
+
 const addShortToTable = (url, code) => {
+    tableUrls.add(url);
+
     let codeLink = "http://shorturl.space/" + code;
     let table = document.getElementById("table-body");
     var row = table.insertRow(0);
@@ -21,6 +25,7 @@ const addShortToTable = (url, code) => {
     cell1.appendChild(createLink(codeLink, codeLink));
     cell2.appendChild(createLink(url, url));
 };
+
 
 const fetchNewCode = (url) => {
     const requestBody = {
@@ -39,12 +44,26 @@ const fetchNewCode = (url) => {
     .catch((error) => console.log(error));
 };
 
+const urlOk = (url) => {
+    if (tableUrls.has(url)) {
+        return false;
+    }
+
+    if (url.includes("shorturl.space")) {
+        return false;
+    }
+
+    return true;
+};
+
 let urlInput = document.getElementById("url-input");
 let form = document.getElementById("form");
 
 form.addEventListener('submit', function(e) {
         e.preventDefault();
         let url = urlInput.value;
-        fetchNewCode(url);
+        if (urlOk(url)) {
+            fetchNewCode(url);
+        }
 });
 
