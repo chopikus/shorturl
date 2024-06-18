@@ -9,11 +9,17 @@ import (
 func NewHandler() http.Handler {
     r := mux.NewRouter()
     
-    r.HandleFunc("/", indexHandler)
-    r.HandleFunc("/index.css", cssHandler)
-    r.HandleFunc("/index.js", jsHandler)
+    r.HandleFunc("/", indexHandler).
+      Methods("GET")
 
-    r.HandleFunc("/{code:[1-9A-Z]{6}}", codeHandler)
+    r.HandleFunc("/index.css", cssHandler).
+      Methods("GET")
+
+    r.HandleFunc("/index.js", jsHandler).
+      Methods("GET")
+
+    r.HandleFunc("/{code:[1-9A-Z]{6}}", codeHandler).
+      Methods("GET")
 
     r.HandleFunc("/api/new", newCodeHandler).
       Methods("POST")
