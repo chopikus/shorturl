@@ -17,15 +17,12 @@ This small app offers short, concise urls for easier sharing.
      * The URL Host in `$url` must not be `shorturl.space`
      * Request body must not exceed 8192 bytes
      * `$url` length must not exceed 2048 bytes
-  
-   Response (TODO):
-     * 
    
    Examples (TODO):
    
    |Request|Result|
    |-------|------|
-   |||
+   |POST `/api/new`, `Content-Type: application/json`, Request Body: `{"urlOriginal": "https://example.com"}`|JSON `{"urlOriginal": "https://example.com", "urlCode": "ABCDEF"}`|
    
 2. Short link access
    |Item|Value|required?|
