@@ -1,8 +1,25 @@
 package main
 
 import (
+    "log"
+    "time"
     "math/rand"
+    "database/sql"
+    _ "github.com/lib/pq"
 )
+
+var db *sql.DB
+
+func init() {
+    /* rand is used to generate new URL codes */
+    rand.Seed(time.Now().UnixNano())
+
+    tmpDB, err := sql.Open("postgres", "dbname=urldb user=ihor password=ihor host=/tmp sslmode=disable")
+    if err != nil {
+        log.Fatal(err)
+    }
+    db = tmpDB
+}
 
 func generateCode() string {
     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"

@@ -1,29 +1,12 @@
 package main
 
 import (
-  "database/sql"
-  _ "github.com/lib/pq"
   "log"
-  "math/rand"
-  "time"
   "net/http"
   "github.com/gorilla/mux"
 )
 
-var db *sql.DB
-
-func init() {
-    /* rand is used to generate new URL codes */
-    rand.Seed(time.Now().UnixNano())
-
-    tmpDB, err := sql.Open("postgres", "dbname=urldb user=ihor password=ihor host=/tmp sslmode=disable")
-    if err != nil {
-        log.Fatal(err)
-    }
-    db = tmpDB
-}
-
-func main() {
+func NewHandler() http.Handler {
     r := mux.NewRouter()
     
     r.HandleFunc("/", indexHandler)
@@ -37,5 +20,11 @@ func main() {
     
     r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
     r.MethodNotAllowedHandler = http.HandlerFunc(methodNotAllowedHandler)
-    log.Fatal(http.ListenAndServe("localhost:8000", r))
+    
+    return r
+}
+
+func main() {
+   r := NewHandler()
+   log.Fatal(http.ListenAndServe("localhost:8000", r))
 }
