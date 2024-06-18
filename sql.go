@@ -10,6 +10,12 @@ import (
 
 var db *sql.DB
 
+type Short struct {
+    UrlOriginal string `json:"urlOriginal"`
+    UrlCode string `json:"urlCode"`
+    ExpiresOn time.Time `json:"expiresOn"`
+}
+
 func init() {
     /* rand is used to generate new URL codes */
     rand.Seed(time.Now().UnixNano())
@@ -33,30 +39,39 @@ func generateCode() string {
 }
 
 // Generates a new code for the provided url and puts it into the database.
-func createCode(url string) (string, error) {
+func createCode(url string) (Short, error) {
     var code string = generateCode()
+    var exp time.Time
 
-    _, err := db.Exec("INSERT INTO urls (url_original, url_code) VALUES ($1, $2)", url, code)
+    err := db.
+           QueryRow(`INSERT INTO urls 
+                     (url_original, url_code, expires_on)
+                     VALUES ($1, $2, NOW() + '24 hour')
+                     RETURNING expires_on`, 
+                    url, code).
+           Scan(&exp)
+            
     
     if err != nil {
-        return "", err
+        return Short{}, err
     }
-
-    return code, nil
+    
+    return Short{UrlCode: code, UrlOriginal: url, ExpiresOn: exp}, nil
 }
 
 
-// Gets a url from the database for a provided code
-func getUrl(code string) (string, error) {
+// Gets a short from the database for a provided code
+func getCode(code string) (Short, error) {
     var url string
+    var exp time.Time
 
     err := db.
-           QueryRow("SELECT url_original FROM urls WHERE url_code=$1", code).
-           Scan(&url)
+           QueryRow("SELECT url_original, expires_on FROM urls WHERE url_code=$1", code).
+           Scan(&url, &exp)
 
     if err != nil {
-        return "", err
+        return Short{}, err
     }
 
-    return url, nil
+    return Short{UrlCode: code, UrlOriginal: url, ExpiresOn: exp}, nil
 }

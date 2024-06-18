@@ -25,7 +25,7 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 // Examples: /ABCDEF, /1234A6
 func codeHandler(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
-    url, err := getUrl(vars["code"])
+    short, err := getCode(vars["code"])
     if err == sql.ErrNoRows { 
         notFoundHandler(w, r)
         return
@@ -36,7 +36,7 @@ func codeHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    templates.Redirect.Execute(w, url)
+    templates.Redirect.Execute(w, short.UrlOriginal)
 }
 
 // Checks the HTTP Requests, parses the urlOriginal, and returns it if found.
@@ -103,18 +103,14 @@ func newCodeHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    code, err := createCode(urlOriginal)
+    short, err := createCode(urlOriginal)
     if err != nil {
         http.Error(w, "Internal error", http.StatusInternalServerError)
         return
-    }
-    
-    output := make(map[string]interface{})
-    output["urlOriginal"] = urlOriginal
-    output["urlCode"] = code
+    } 
 
     w.Header().Add("Content-Type", "application/json")
-    j, err := json.Marshal(output)
+    j, err := json.Marshal(short)
     if err != nil {
         http.Error(w, "Internal error", http.StatusInternalServerError)
         return

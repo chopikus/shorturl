@@ -13,17 +13,20 @@ const createLink = (url, text) => {
 
 let tableUrls = new Set();
 
-const addShortToTable = (url, code) => {
+const addShortToTable = (url, code, expiresOn) => {
     tableUrls.add(url);
     let table = document.getElementById("table-body");
     var row = table.insertRow(0);
     let cell1 = row.insertCell(0);
     let cell2 = row.insertCell(1);
-
+    let cell3 = row.insertCell(2);
+    
     let codeLink = "http://shorturl.space/" + code;
     let codeLinkText = "shorturl.space/" + code;
+    let time = new Date(expiresOn).toLocaleString();
     cell1.appendChild(createLink(codeLink, codeLinkText));
-    cell2.appendChild(createLink(url, url));
+    cell2.appendChild(document.createTextNode(time));
+    cell3.appendChild(createLink(url, url));
 };
 
 
@@ -45,7 +48,7 @@ const fetchNewCode = async function (url) {
                           });
     if (response.ok) {
         let j = await response.json();
-        addShortToTable(url, j["urlCode"]);
+        addShortToTable(url, j["urlCode"], j["expiresOn"]);
     } else {
         let t = await response.text();
         showError("API Error: " + t);
