@@ -32,7 +32,7 @@ func codeHandler(w http.ResponseWriter, r *http.Request) {
     } else if err != nil {
         w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintf(w, "Internal error")
-        log.Println("Server error. Request: %v\n, Error: %v\n", err)
+        log.Printf("Server error. \n\n Request: \n%v\n Error: \n%v\n", r, err)
         return
     }
 
