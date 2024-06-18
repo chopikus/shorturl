@@ -32,7 +32,7 @@ func main() {
 
     r.HandleFunc("/{code:[1-9A-Z]{6}}", codeHandler)
 
-    r.HandleFunc("/api/new", generateCodeHandler).
+    r.HandleFunc("/api/new", newCodeHandler).
       Methods("POST")
     
     r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
