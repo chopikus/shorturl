@@ -39,6 +39,9 @@ This small app offers short, concise urls for easier sharing.
    Response:
    Static HTML page that redirects to the original URL linked to the $code.
 
+   Errors:
+   * `404 Not Found` if the code isn't valid.
+
 4. Static files
    
    |File|Request|
