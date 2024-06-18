@@ -37,16 +37,16 @@ This small app offers short, concise urls for easier sharing.
      * `$code` must be valid (obtained through `/api/new` request and not expired)
   
    Response:
-   Static HTML page that redirects to the original URL linked to the $code.
+     * Static HTML page that redirects to the original URL linked to the $code.
+     * Status code 200
 
    Errors:
-   * `404 Not Found` if the code isn't valid.
+     * `404 Not Found` if the code isn't valid.
 
-4. Static files
-   
+3. Static files
+  
    |File|Request|
    |----|-------|
    |`./index.html` |GET `shorturl.space/`|
    |`./index.css`  |GET `shorturl.space/index.css`|
-   |`./index.js`   |GET `shorturl.space/index.js`|
-  
+   |`./index.js`   |GET `shorturl.space/index.js`| 
