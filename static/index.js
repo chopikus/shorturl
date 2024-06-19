@@ -39,7 +39,7 @@ const fetchNewCode = async function (url) {
         urlOriginal: url
     };
 
-    const response = await fetch("http://localhost:8000/api/new", {
+    const response = await fetch("/api/new", {
                            method: "POST", 
                            headers: {
                                "Content-Type": "application/json",
