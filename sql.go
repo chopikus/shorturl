@@ -1,6 +1,7 @@
 package main
 
 import (
+    "os"
     "log"
     "time"
     "math/rand"
@@ -19,8 +20,11 @@ type Short struct {
 func init() {
     /* rand is used to generate new URL codes */
     rand.Seed(time.Now().UnixNano())
+    
+    user := os.Getenv("SHORTURL_POSTGRES_USER")
+    password := os.Getenv("SHORTURL_POSTGRES_PASSWORD")
 
-    tmpDB, err := sql.Open("postgres", "dbname=urldb user=ihor password=ihor host=/tmp sslmode=disable")
+    tmpDB, err := sql.Open("postgres", "dbname=urldb user="+user+" password="+password+" host=/tmp sslmode=disable")
     if err != nil {
         log.Fatal(err)
     }
