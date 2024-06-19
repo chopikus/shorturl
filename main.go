@@ -51,7 +51,7 @@ func main() {
    r := NewHandler()
    host := os.Getenv("SHORTURL_SERVER_ADDRESS")
    
-   log.Println("Starting shorturl.space server...")
+   log.Printf("Starting shorturl.space server... SERVER_ADDRESS=%s\n", host)
    log.Fatal(http.ListenAndServe(host, r))
    select {}
 }
