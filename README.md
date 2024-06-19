@@ -22,7 +22,7 @@ This small app offers short, concise urls for easier sharing.
    
    |Request|Result|
    |-------|------|
-   |POST `/api/new`, `Content-Type: application/json`, Request Body: `{"urlOriginal": "https://example.com"}`| `{"urlOriginal":"https://youtube.com","urlCode":"RML25P","expiresOn":"2024-06-19T20:10:14.006018-04:00"}`|
+   |POST `/api/new`, `Content-Type: application/json`, Request Body: `{"urlOriginal": "https://example.com"}`| `{"urlOriginal":"https://example.com","urlCode":"RML25P","expiresOn":"2024-06-19T20:10:14.006018-04:00"}`|
    
 2. Short link access
    |Item|Value|required?|
