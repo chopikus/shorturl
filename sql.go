@@ -66,7 +66,7 @@ func getCode(code string) (Short, error) {
     var exp time.Time
 
     err := db.
-           QueryRow("SELECT url_original, expires_on FROM urls WHERE url_code=$1", code).
+           QueryRow("SELECT url_original, expires_on FROM urls WHERE expires_on >= NOW() AND url_code=$1", code).
            Scan(&url, &exp)
 
     if err != nil {
@@ -74,4 +74,12 @@ func getCode(code string) (Short, error) {
     }
 
     return Short{UrlCode: code, UrlOriginal: url, ExpiresOn: exp}, nil
+}
+
+func removeExpiredCodes() error {
+    _, err := db.Exec("DELETE FROM urls WHERE expires_on < NOW()")
+    if err != nil {
+        return err
+    }
+    return nil
 }

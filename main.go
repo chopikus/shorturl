@@ -4,6 +4,7 @@ import (
   "log"
   "net/http"
   "github.com/gorilla/mux"
+  "time"
 )
 
 func NewHandler() http.Handler {
@@ -30,7 +31,22 @@ func NewHandler() http.Handler {
     return r
 }
 
+func autoRemoveExpired() {
+   ticker := time.NewTicker(1 * time.Minute)
+
+   for _ = range ticker.C {
+      err := removeExpiredCodes();
+      if err != nil {
+        log.Printf("[AUTO] Error removing expired codes! %v\n", err)
+      } else {
+        log.Println("[AUTO] Removed expired codes")
+      }
+   }
+}
+
 func main() {
+   go autoRemoveExpired()
    r := NewHandler()
    log.Fatal(http.ListenAndServe("localhost:8000", r))
+   select {}
 }
