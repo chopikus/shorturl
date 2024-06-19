@@ -1,6 +1,7 @@
 package main
 
 import (
+  "os"
   "log"
   "net/http"
   "github.com/gorilla/mux"
@@ -48,6 +49,8 @@ func main() {
    go autoRemoveExpired()
    log.Println("autoRemove service started")
    r := NewHandler()
-   log.Fatal(http.ListenAndServe("localhost:8000", r))
+   host := os.Getenv("SHORTURL_SERVER_ADDRESS")
+
+   log.Fatal(http.ListenAndServe(host, r))
    select {}
 }
