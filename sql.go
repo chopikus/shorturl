@@ -23,11 +23,23 @@ func init() {
     
     user := os.Getenv("SHORTURL_POSTGRES_USER")
     password := os.Getenv("SHORTURL_POSTGRES_PASSWORD")
+    host := os.Getenv("SHORTURL_POSTGRES_HOST")
+    if host == "" {
+        host = "/var/run/postgresql"
+    }
 
-    tmpDB, err := sql.Open("postgres", "dbname=urldb user="+user+" password="+password+" host=/tmp sslmode=disable")
+    openString := fmt.Sprintf("dbname=urldb user=%s password=%s host=%s sslmode=disable", user, password, host)
+    tmpDB, err := sql.Open("postgres", openString)
     if err != nil {
         log.Fatal(err)
     }
+    
+    // testing the connection, sql.Open doesn't catch the errors
+    _, err = tmpDB.Exec("SELECT 2+3")
+    if err != nil {
+        log.Fatal(err)
+    }
+
     db = tmpDB
 }
 
