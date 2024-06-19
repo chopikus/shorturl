@@ -50,7 +50,8 @@ func main() {
    log.Println("autoRemove service started")
    r := NewHandler()
    host := os.Getenv("SHORTURL_SERVER_ADDRESS")
-
+   
+   log.Println("Starting shorturl.space server...")
    log.Fatal(http.ListenAndServe(host, r))
    select {}
 }
