@@ -46,6 +46,7 @@ func autoRemoveExpired() {
 
 func main() {
    go autoRemoveExpired()
+   log.Println("autoRemove service started")
    r := NewHandler()
    log.Fatal(http.ListenAndServe("localhost:8000", r))
    select {}
