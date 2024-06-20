@@ -4,8 +4,10 @@ This small app offers short, concise urls for easier sharing.
 
 ## Run
 
-1. Set the environment variables `SHORTURL_POSTGRES_USER`, `SHORTURL_POSTGRES_PASSWORD`, `SHORTURL_SERVER_ADDRESS` (f.e `admin`, `admin`, `localhost:8000`)
-2. `go run .`
+1. Clone the repository
+2. `go build`
+3. Set the environment variables `SHORTURL_POSTGRES_USER`, `SHORTURL_POSTGRES_PASSWORD`, `SHORTURL_SERVER_ADDRESS` (f.e `admin`, `admin`, `localhost:8000`)
+4. `./shorturl`
 
 ## Requests
 
