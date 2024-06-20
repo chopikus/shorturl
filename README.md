@@ -1,6 +1,9 @@
 # shorturl
 
-This small app offers short, concise urls for easier sharing.
+Small app making short urls to share easily.
+
+![Example of the UI](https://github.com/chopikus/shorturl/assets/67230858/efb0cf80-4d36-4175-b638-4d9b13d56a7e)
+
 
 ## Run
 
