@@ -9,7 +9,15 @@ Small app making short urls.
 
 1. Clone the repository
 2. `go build`
-3. Set the environment variables `SHORTURL_POSTGRES_USER`, `SHORTURL_POSTGRES_PASSWORD`, `SHORTURL_SERVER_ADDRESS` (f.e `admin`, `admin`, `localhost:8000`)
+3. Set the environment variables:
+   * `SHORTURL_POSTGRES_USER` (f.e `admin`)
+   * `SHORTURL_POSTGRES_PASSWORD` (f.e `admin`)
+   * `SHORTURL_SERVER_ADDRESS` (f.e `localhost:8000`)
+     
+   For HTTPS support:
+      * `SHORTURL_HTTPS_ADDRESS` (f.e `localhost:8080`)
+      * `SHORTURL_CERTFILE` (public key, path to the .crt/.pem file)
+      * `SHORTURL_KEYFILE` (private key, path to the .key file)
 4. `./shorturl`
 
 ## Requests
