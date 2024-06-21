@@ -33,6 +33,7 @@ func NewHandler() http.Handler {
 }
 
 func autoRemoveExpired() {
+   log.Println("Starting autoRemove service...")
    ticker := time.NewTicker(1 * time.Minute)
 
    for _ = range ticker.C {
@@ -45,13 +46,27 @@ func autoRemoveExpired() {
    }
 }
 
-func main() {
-   go autoRemoveExpired()
-   log.Println("autoRemove service started")
+func serveHttps() {
+   r := NewHandler()
+   host := os.Getenv("SHORTURL_HTTPS_ADDRESS")
+   certFilePath := os.Getenv("SHORTURL_CERTFILE")
+   keyFilePath  := os.Getenv("SHORTURL_KEYFILE")
+   log.Printf("Starting HTTPS server.. SHORTURL_HTTPS_ADDRESS=%s\n", host) 
+   log.Fatal(http.ListenAndServeTLS(host, certFilePath, keyFilePath, r))
+}
+
+func serveHttp() {
    r := NewHandler()
    host := os.Getenv("SHORTURL_SERVER_ADDRESS")
-   
-   log.Printf("Starting shorturl.space server... SERVER_ADDRESS=%s\n", host)
+   log.Printf("Starting HTTP server.. SHORTURL_SERVER_ADDRESS=%s\n", host) 
    log.Fatal(http.ListenAndServe(host, r))
+}
+
+func main() {
+   go autoRemoveExpired()
+
+   go serveHttps();
+   serveHttp();
+
    select {}
 }
