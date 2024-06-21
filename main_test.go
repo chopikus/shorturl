@@ -9,22 +9,96 @@ import (
     "strings"
     "testing"
     "github.com/chopikus/shorturl/templates"
+    "github.com/stretchr/testify/assert"
 )
 
+func TestNewCode(t *testing.T) {
+    applicationHandler := NewHandler()
+    s := httptest.NewServer(applicationHandler)
+    defer s.Close()
+
+    type TestCase struct {
+        description string
+        contentType string
+        body string
+        wantStatusCode int
+    }
+
+    testCases := []TestCase {
+        {
+            description: "Wrong Content-Type (text/html)",
+            contentType: "text/html",
+            body:        `{"urlOriginal": "https://example.com"}`,
+            wantStatusCode:  415,
+        },
+        {
+            description: "Correct Content-Type (empty)",
+            contentType: "",
+            body:        `{"urlOriginal": "https://example.com"}`,
+            wantStatusCode:  200,
+        },
+        {
+            description: "Empty body",
+            contentType: "application/json",
+            body:        "",
+            wantStatusCode: 400,
+        },
+        {
+            description: "Too large body (20k characters)",
+            contentType: "application/json",
+            body:        strings.Repeat("a", 20000),
+            wantStatusCode: 400,
+        },
+        {
+            description: "Wrong JSON key",
+            contentType: "application/json",
+            body:        `{"hello": "world"}`,
+            wantStatusCode: 400,
+        },
+    }
+
+    for _, testCase := range testCases {
+		t.Run(testCase.description, func(t *testing.T) {
+            bodyReader := strings.NewReader(testCase.body) 
+
+            res, err := http.Post(s.URL + "/api/new", testCase.contentType, bodyReader)
+
+            if err != nil {
+                t.Fatalf("%s", err)
+            }
+
+            assert.Equal(t, testCase.wantStatusCode, res.StatusCode)
+		})
+	}
+}
+
+func TestNewCodeWrongJsonKey(t *testing.T) {
+    applicationHandler := NewHandler()
+    s := httptest.NewServer(applicationHandler)
+    defer s.Close()
+   
+    bodyReader := strings.NewReader(`{"hello": "world"}`)
+    res, err := http.Post(s.URL + "/api/new", "", bodyReader)
+
+    if err != nil {
+        t.Fatalf("%s", err)
+    }
+
+    if res.StatusCode != 400 {
+        t.Fatalf("Wrong status code when wrong json key! \n")
+    }
+}
 
 // Creates new code using /api/new, returns the code string
 func createNewCode(t *testing.T, s *httptest.Server, url string) string {
     bodyReader := strings.NewReader(`{"urlOriginal": "` + url + `"}`)
    
-    res, err := http.Post(s.URL + "/api/new", "application/json", bodyReader)
-   
+    res, err := http.Post(s.URL + "/api/new", "application/json", bodyReader)   
     if err != nil {
         t.Fatalf("%s", err)
     }
-
     defer res.Body.Close()
     response, err := io.ReadAll(res.Body)
-
     if err != nil {
         t.Fatalf("%s", err)
     }
