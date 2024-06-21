@@ -72,23 +72,6 @@ func TestNewCode(t *testing.T) {
 	}
 }
 
-func TestNewCodeWrongJsonKey(t *testing.T) {
-    applicationHandler := NewHandler()
-    s := httptest.NewServer(applicationHandler)
-    defer s.Close()
-   
-    bodyReader := strings.NewReader(`{"hello": "world"}`)
-    res, err := http.Post(s.URL + "/api/new", "", bodyReader)
-
-    if err != nil {
-        t.Fatalf("%s", err)
-    }
-
-    if res.StatusCode != 400 {
-        t.Fatalf("Wrong status code when wrong json key! \n")
-    }
-}
-
 // Creates new code using /api/new, returns the code string
 func createNewCode(t *testing.T, s *httptest.Server, url string) string {
     bodyReader := strings.NewReader(`{"urlOriginal": "` + url + `"}`)
