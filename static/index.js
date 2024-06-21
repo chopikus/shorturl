@@ -21,8 +21,8 @@ const addShortToTable = (url, code, expiresOn) => {
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
     
-    let codeLink = "http://shorturl.space/" + code;
-    let codeLinkText = "shorturl.space/" + code;
+    let codeLink = "https://shorturl.space/" + code;
+    let codeLinkText = "https://shorturl.space/" + code;
     let time = new Date(expiresOn).toLocaleString();
     cell1.appendChild(createLink(codeLink, codeLinkText));
     cell2.appendChild(document.createTextNode(time));
