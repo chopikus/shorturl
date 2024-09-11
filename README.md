@@ -4,6 +4,57 @@ Small app making short urls.
 
 ![Example of the UI](https://github.com/chopikus/shorturl/assets/67230858/efb0cf80-4d36-4175-b638-4d9b13d56a7e)
 
+## Benchmarking API requests
+
+Grafana [k6](https://k6.io/) is a great tool for this purpose. 
+
+Benchmarking a common usage scenario, a short url is created then opened a few times.
+
+The backend server is run locally, on Fedora 40 AMD with 32GB RAM, Ryzen 7 PRO 6850U processor.
+
+Output of command `k6 run --vus 1000 --iterations 1000 api-test.js`:
+```
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: api-test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1000 max VUs, 10m30s max duration (incl. graceful stop):
+              * default: 1000 iterations shared among 1000 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+     █ Create and get
+
+       ✓ status is 200
+       ✓ has urlOriginal
+       ✓ has urlCode
+       ✓ has expiresOn
+
+     checks.........................: 100.00% ✓ 14000       ✗ 0     
+     data_received..................: 5.1 MB  566 kB/s
+     data_sent......................: 1.0 MB  114 kB/s
+     group_duration.................: avg=6.05s   min=3.33s    med=6.02s    max=9.07s    p(90)=7.29s   p(95)=7.7s    
+     http_req_blocked...............: avg=58.51µs min=1.46µs   med=5.13µs   max=17.81ms  p(90)=21.51µs p(95)=264.49µs
+     http_req_connecting............: avg=44.31µs min=0s       med=0s       max=17.73ms  p(90)=0s      p(95)=177.81µs
+   ✓ http_req_duration..............: avg=4.93ms  min=290.51µs med=603.18µs max=117.69ms p(90)=6.77ms  p(95)=17.25ms 
+       { expected_response:true }...: avg=4.93ms  min=290.51µs med=603.18µs max=117.69ms p(90)=6.77ms  p(95)=17.25ms 
+   ✓ http_req_failed................: 0.00%   ✓ 0           ✗ 11000 
+     http_req_receiving.............: avg=43.38µs min=10.58µs  med=37.36µs  max=1.05ms   p(90)=67.57µs p(95)=81.6µs  
+     http_req_sending...............: avg=25µs    min=6.74µs   med=16.64µs  max=3.33ms   p(90)=44.42µs p(95)=69.81µs 
+     http_req_tls_handshaking.......: avg=0s      min=0s       med=0s       max=0s       p(90)=0s      p(95)=0s      
+     http_req_waiting...............: avg=4.86ms  min=251.02µs med=544.32µs max=117.58ms p(90)=6.67ms  p(95)=17.18ms 
+     http_reqs......................: 11000   1210.932199/s
+     iteration_duration.............: avg=6.05s   min=3.33s    med=6.02s    max=9.07s    p(90)=7.29s   p(95)=7.7s    
+     iterations.....................: 1000    110.084745/s
+     vus............................: 2       min=2         max=1000
+     vus_max........................: 1000    min=1000      max=1000
+```
+
 
 ## Run
 
