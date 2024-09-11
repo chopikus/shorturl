@@ -12,7 +12,7 @@ Benchmarking a common usage scenario, a short url is created then opened a few t
 
 The backend server is run locally, on Fedora 40 AMD with 32GB RAM, Ryzen 7 PRO 6850U processor.
 
-Output of command `k6 run --vus 1000 --iterations 1000 api-test.js`:
+Running `k6 run --vus 1000 --iterations 1000 api-test.js`:
 ```
           /\      |‾‾| /‾‾/   /‾‾/   
      /\  /  \     |  |/  /   /  /    
