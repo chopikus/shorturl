@@ -74,12 +74,12 @@ Running `k6 run --vus 1000 --iterations 1000 api-test.js`:
 ## Requests
 
 1. Create short link
-   |Item|Value|required?|
-   |---|---|---|
-   |URL|`shorturl.space/api/new`|__yes__|
-   |Request type|POST|__yes__|
-   |Request body(JSON)|`{urlOriginal: $url}`, where `$url` is the URL to be shortened.|__yes__|
-   |Headers|`Content-Type: application/json`|__yes__|
+   |Item|Value|
+   |---|---|
+   |URL|`shorturl.space/api/new`|
+   |Request type|POST|
+   |Request body(JSON)|`{urlOriginal: $url}`, where `$url` is the URL to be shortened.|
+   |Headers|`Content-Type: application/json`|
 
    Further request requirements:
      * `$url` must be a valid URL link (parsable by golang url.ParseRequestURI)
@@ -94,10 +94,10 @@ Running `k6 run --vus 1000 --iterations 1000 api-test.js`:
    |POST `/api/new`, `Content-Type: application/json`, Request Body: `{"urlOriginal": "https://example.com"}`| `{"urlOriginal":"https://example.com","urlCode":"RML25P","expiresOn":"2024-06-19T20:10:14.006018-04:00"}`|
    
 2. Short link access
-   |Item|Value|required?|
-   |---|---|---|
-   |URL|`shorturl.space/$code`, where `$code` follows regex `[1-9A-Z]{6}`|__yes__|
-   |Request type|GET|__yes__|
+   |Item|Value|
+   |---|---|
+   |URL|`shorturl.space/$code`, where `$code` follows regex `[1-9A-Z]{6}`|
+   |Request type|GET|
 
    Further request requirements:
      * `$code` must be valid (obtained through `/api/new` request and not expired)
